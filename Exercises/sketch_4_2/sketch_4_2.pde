@@ -1,35 +1,29 @@
 //Use multiplication to create a series of lines with increasing space between each.
 
-int screenWidth = 500;
-
-size(screenWidth*2,screenWidth);
+size(1000,500);
 background(30,90,100);
 
-float position = 10;
+float pos = 10;
 
 stroke(255);
-line(position,0,position,height);
+line(pos,0,pos,height);
 
-position = position*2.5;
-println(position);
-line(position,0,position,height);
+pos = pos*2.5;
+println(pos);
+line(pos,0,pos,height);
 
-position = position*2.5;
-println(position);
-line(position,0,position,height);
+pos = pos*2.5;
+println(pos);
+line(pos,0,pos,height);
 
-position = position*2.5;
-println(position);
-line(position,0,position,height);
+pos = pos*2.5;
+println(pos);
+line(pos,0,pos,height);
 
-position = position*2.5;
-println(position);
-line(position,0,position,height);
+pos = pos*2.5;
+println(pos);
+line(pos,0,pos,height);
 
-position = position*2.5;
-println(position);
-line(position,0,position,height);
-
-
-
-for(float position = 10; position
+pos = pos*2.5;
+println(pos);
+line(pos,0,pos,height);
