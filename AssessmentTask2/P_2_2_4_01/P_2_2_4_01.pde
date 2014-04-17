@@ -17,10 +17,10 @@
 // limitations under the License.
 
 /**
- * Draws ellipses of random positions, radii and saturation
+ * Draws concentric rings of ellipses of random radii and saturation
  *    
  * MOUSE
- * click               : Draws ellipses of random positions, radii and saturation
+ * click               : Draws concentric circles of ellipses of random radii and saturation
  * 
  * KEYS
  * s                   : save png
@@ -58,14 +58,24 @@ if (mousePressed == true)  {
   fill(215,0,100,50);
   ellipse(368,268,50,50); //Draws a transparent ellipse
 
-  float newR = random(1,20); //Expland the range of radii even further
-  float newX = random(0+newR, width-newR);
-  float newY = random(0+newR, height-newR);
-  
-  int randomSaturation = int(random(0,100)); 
+  float newR = random(1,20);
+
+  int randomSaturation = int(random(0,100));
   fill(215,randomSaturation,100,50); //Applies random saturation to the ellipses
 
-  ellipse(newX,newY,newR,newR);
+//Creates concentric rings, made up of ellipses, with exponentially increasing radii
+  for (float r=50;r<width; r*=1.5){
+  
+    int count = int(r/2);
+    float angle = radians(360/float(count));
+    
+    for (int i=0;i<count;i++) { 
+      float xPos = 368 + cos(angle*i)*r;
+      float yPos = 268 + sin(angle*i)*r;
+  
+      ellipse(xPos,yPos,newR,newR); 
+    }
+  }
 }
 
   if (savePDF) {
@@ -84,10 +94,3 @@ String timestamp() {
   Calendar now = Calendar.getInstance();
   return String.format("%1$ty%1$tm%1$td_%1$tH%1$tM%1$tS", now);
 }
-
-
-
-
-
-
-
