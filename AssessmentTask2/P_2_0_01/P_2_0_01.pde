@@ -17,11 +17,11 @@
 // limitations under the License.
 
 /**
- * drawing a filled circle with lines.
- * 	 
+ * drawing tringles overlapped in a circular arrangement
+ *    
  * MOUSE
- * position x          : length
- * position y          : thickness and number of lines
+ * position x          : radius
+ * position y          : number of triangles
  * 
  * KEYS
  * s                   : save png
@@ -32,34 +32,41 @@ import processing.pdf.*;
 import java.util.Calendar;
 
 boolean savePDF = false;
+PImage pattern; 
 
 void setup(){
-  size(550, 550);
+  size(410, 410); //Change to the size of the 'pattern' image
+
+  pattern = loadImage("pattern.jpg");
 }
 
 void draw(){
   if (savePDF) beginRecord(PDF, timestamp()+".pdf");
 
-  strokeCap(SQUARE);
   smooth();
-  noFill();
+  fill(200,235,225,150); //Change fill colour, add transparency
   background(255);
+  
+  tint(255,240);//Give images a slight transparency
+  image(pattern,0,0);
+
   translate(width/2,height/2);
 
   int circleResolution = (int) map(mouseY, 0,height, 2,80);
   float radius = mouseX-width/2 + 0.5;
   float angle = TWO_PI/circleResolution;
 
-  strokeWeight(mouseY/20);
+noStroke(); //Eliminate stroke
 
-  beginShape();
-  for (int i=0; i<=circleResolution; i++){
+//Change lines to triangles
+  for (int i=0; i<circleResolution; i++){
     float x = cos(angle*i) * radius;
     float y = sin(angle*i) * radius;
-    line(0, 0, x, y);
-    // vertex(x, y);
+    float x2 = cos(angle*i+1.5*angle) * radius;
+    float y2 = sin(angle*i+1.5*angle) * radius;
+
+triangle(0,0,x,y,x2,y2);
   }
-  endShape();
 
   if (savePDF) {
     savePDF = false;
