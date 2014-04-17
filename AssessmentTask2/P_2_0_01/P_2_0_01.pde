@@ -20,7 +20,6 @@
  * drawing tringles overlapped in a circular arrangement
  *    
  * MOUSE
- * position x          : radius
  * position y          : number of triangles
  * 
  * KEYS
@@ -32,11 +31,11 @@ import processing.pdf.*;
 import java.util.Calendar;
 
 boolean savePDF = false;
-PImage pattern; 
+PImage pattern;
 
 void setup(){
   size(410, 410); //Change to the size of the 'pattern' image
-
+  
   pattern = loadImage("pattern.jpg");
 }
 
@@ -44,21 +43,31 @@ void draw(){
   if (savePDF) beginRecord(PDF, timestamp()+".pdf");
 
   smooth();
-  fill(200,235,225,150); //Change fill colour, add transparency
   background(255);
-  
   tint(255,240);//Give images a slight transparency
   image(pattern,0,0);
 
   translate(width/2,height/2);
 
-  int circleResolution = (int) map(mouseY, 0,height, 2,80);
-  float radius = mouseX-width/2 + 0.5;
+  int circleResolution = (int) map(mouseY, 0,height, 80,2); //Inverts relationship between y-coordinate and number of triangles
+  float radius = 150; //Sets a fixed radius
   float angle = TWO_PI/circleResolution;
 
 noStroke(); //Eliminate stroke
 
-//Change lines to triangles
+//Underlay the original circle of triangles with another of different fill and coordinates
+  fill(120,130,200,200);
+  for (int i=0; i<circleResolution; i++){
+    float x = cos(angle*i) * radius;
+    float y = sin(angle*i) * radius;
+    float x2 = cos(angle*i+angle) * radius;
+    float y2 = sin(angle*i+angle) * radius; 
+
+triangle(0,0,x,y,x2,y2);
+  }
+
+//Original circle of triangles
+  fill(200,235,225,150); 
   for (int i=0; i<circleResolution; i++){
     float x = cos(angle*i) * radius;
     float y = sin(angle*i) * radius;
