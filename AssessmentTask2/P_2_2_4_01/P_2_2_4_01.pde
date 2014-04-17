@@ -17,7 +17,10 @@
 // limitations under the License.
 
 /**
- * limited diffusion aggregation 
+ * Draws ellipses of random positions, radii and saturation
+ *    
+ * MOUSE
+ * click               : Draws ellipses of random positions, radii and saturation
  * 
  * KEYS
  * s                   : save png
@@ -30,76 +33,40 @@ import java.util.Calendar;
 boolean savePDF = false;
 PImage hand;
 
-int maxCount = 5000; //max count of the cirlces
-int currentCount = 1;
-float[] x = new float[maxCount];
-float[] y = new float[maxCount];
-float[] r = new float[maxCount]; // radius
-
 void setup() {
   size(2448/4,2612/4); //Changes the size of the window to be proportional to the 'hand' image
   smooth();
-//frameRate(10);
-
-hand = loadImage("hand.jpg"); //Assigns image to 'hand'
-
-  // first circle
-  x[0] = 368; //Changes the circle's x-coordinate to that of the fingertip
-  y[0] = 268; //Changes the circle's y-coordinate to that of the fingertip
-  r[0] = 10;
-  //r[0] = 400; 
+  frameRate(10);
   
-  colorMode(HSB,359,100,100,100); //Changes the colour mode to HSB
-
+hand = loadImage("hand.jpg"); //Assigns image to 'hand'
+     
+  noStroke(); //Eliminates stroke weight
+  colorMode(HSB,359,100,100,100);
 }
 
 void draw() {
   if (savePDF) beginRecord(PDF, timestamp()+".pdf");
   background(255);
-
+  
 image(hand, 0,0,width,height); //Inserts image to full window size
 
-  //strokeWeight(0.5);
-  //noFill();
-  noStroke(); //Eliminates stroke weight
+fill(215,0,100);
+ellipse(368,268,30,30); //Draws a white ellipse at the fingertip
 
-  // create a radom set of parameters
-  float newR = random(1, 10); //Expanded the range of radii
+if (mousePressed == true)  {
+
+  fill(215,0,100,50);
+  ellipse(368,268,50,50); //Draws a transparent ellipse
+
+  float newR = random(1,20); //Expland the range of radii even further
   float newX = random(0+newR, width-newR);
   float newY = random(0+newR, height-newR);
+  
+  int randomSaturation = int(random(0,100)); 
+  fill(215,randomSaturation,100,50); //Applies random saturation to the ellipses
 
-  float closestDist = 100000000;
-  int closestIndex = 0;
-  // which circle is the closest?
-  for(int i=0; i < currentCount; i++) {
-    float newDist = dist(newX,newY, x[i],y[i]);
-    if (newDist < closestDist) {
-      closestDist = newDist;
-      closestIndex = i; 
-    } 
-  }
-
-  // show random position and line
-  //fill(230);
-  //ellipse(newX,newY,newR*2,newR*2); 
-  //line(newX,newY,x[closestIndex],y[closestIndex]);
-
-  // aline it to the closest circle outline
-  float angle = atan2(newY-y[closestIndex], newX-x[closestIndex]);
-
-  x[currentCount] = x[closestIndex] + cos(angle) * (r[closestIndex]+newR);
-  y[currentCount] = y[closestIndex] + sin(angle) * (r[closestIndex]+newR);
-  r[currentCount] = newR;
-  currentCount++;
-
-  // draw them
-  for (int i=0 ; i < currentCount; i++) {
-     //fill(50,150);
-    fill(215,i/4,100,50); //Fill is determined by i integer
-    ellipse(x[i],y[i], r[i]*2,r[i]*2);  
-  }
-
-  if (currentCount >= maxCount) noLoop();
+  ellipse(newX,newY,newR,newR);
+}
 
   if (savePDF) {
     savePDF = false;
@@ -117,7 +84,6 @@ String timestamp() {
   Calendar now = Calendar.getInstance();
   return String.format("%1$ty%1$tm%1$td_%1$tH%1$tM%1$tS", now);
 }
-
 
 
 
