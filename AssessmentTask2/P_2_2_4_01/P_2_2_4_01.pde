@@ -48,6 +48,9 @@ hand = loadImage("hand.jpg"); //Assigns image to 'hand'
   y[0] = 268; //Changes the circle's y-coordinate to that of the fingertip
   r[0] = 10;
   //r[0] = 400; 
+  
+  colorMode(HSB,359,100,100,100); //Changes the colour mode to HSB
+
 }
 
 void draw() {
@@ -56,11 +59,12 @@ void draw() {
 
 image(hand, 0,0,width,height); //Inserts image to full window size
 
-  strokeWeight(0.5);
+  //strokeWeight(0.5);
   //noFill();
+  noStroke(); //Eliminates stroke weight
 
   // create a radom set of parameters
-  float newR = random(1, 7);
+  float newR = random(1, 10); //Expanded the range of radii
   float newX = random(0+newR, width-newR);
   float newY = random(0+newR, height-newR);
 
@@ -91,7 +95,7 @@ image(hand, 0,0,width,height); //Inserts image to full window size
   // draw them
   for (int i=0 ; i < currentCount; i++) {
      //fill(50,150);
-    fill(50);
+    fill(215,i/4,100,50); //Fill is determined by i integer
     ellipse(x[i],y[i], r[i]*2,r[i]*2);  
   }
 
