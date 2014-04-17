@@ -20,7 +20,8 @@
  * Draws concentric rings of ellipses of random radii and saturation
  *    
  * MOUSE
- * click               : Draws concentric circles of ellipses of random radii and saturation
+ * position x          : the amount of ellipses in a ring
+ * position y          : the distance between concentric rings
  * 
  * KEYS
  * s                   : save png
@@ -53,8 +54,6 @@ image(hand, 0,0,width,height); //Inserts image to full window size
 fill(215,0,100);
 ellipse(368,268,30,30); //Draws a white ellipse at the fingertip
 
-if (mousePressed == true)  {
-
   fill(215,0,100,50);
   ellipse(368,268,50,50); //Draws a transparent ellipse
 
@@ -63,12 +62,16 @@ if (mousePressed == true)  {
   int randomSaturation = int(random(0,100));
   fill(215,randomSaturation,100,50); //Applies random saturation to the ellipses
 
-//Creates concentric rings, made up of ellipses, with exponentially increasing radii
-  for (float r=50;r<width; r*=1.5){
+int radiusDifference = 5;
+
+//Creates concentric rings, made up of ellipses
+  for (float r=50;r<width; r+=radiusDifference) {
+
+    r+=map(mouseY,0,height,0,50); // The y-position of the cursor determines the distance between concentric rings
   
-    int count = int(r/2);
+    int count = int(map(mouseX,0,width,0,100)); //The x-position of the cursor determines the amount of ellipses in a ring
     float angle = radians(360/float(count));
-    
+  
     for (int i=0;i<count;i++) { 
       float xPos = 368 + cos(angle*i)*r;
       float yPos = 268 + sin(angle*i)*r;
@@ -76,7 +79,6 @@ if (mousePressed == true)  {
       ellipse(xPos,yPos,newR,newR); 
     }
   }
-}
 
   if (savePDF) {
     savePDF = false;
