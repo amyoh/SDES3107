@@ -17,11 +17,8 @@
 // limitations under the License.
 
 /**
- * drawing tringles overlapped in a circular arrangement
+ * looping a shape as it grows in number of sides
  *    
- * MOUSE
- * position y          : number of triangles
- * 
  * KEYS
  * s                   : save png
  * p                   : save pdf
@@ -32,16 +29,19 @@ import java.util.Calendar;
 
 boolean savePDF = false;
 PImage pattern;
+int count = 2;
+
 
 void setup(){
   size(410, 410); //Change to the size of the 'pattern' image
   
   pattern = loadImage("pattern.jpg");
+  frameRate(15); //Sets the speed
 }
 
 void draw(){
   if (savePDF) beginRecord(PDF, timestamp()+".pdf");
-
+  
   smooth();
   background(255);
   tint(255,240);//Give images a slight transparency
@@ -49,32 +49,38 @@ void draw(){
 
   translate(width/2,height/2);
 
-  int circleResolution = (int) map(mouseY, 0,height, 80,2); //Inverts relationship between y-coordinate and number of triangles
-  float radius = 150; //Sets a fixed radius
-  float angle = TWO_PI/circleResolution;
-
+        count++; //The number of sides on the shape increases
+  if (count == 15){
+  count=0;
+  } //Repeat once the number of sides reaches 15
+   
 noStroke(); //Eliminate stroke
 
-//Underlay the original circle of triangles with another of different fill and coordinates
-  fill(120,130,200,200);
-  for (int i=0; i<circleResolution; i++){
+  float radius = 150;
+
+  fill(120,130,200,50);
+  for (int i=0; i<100; i++){
+    float angle = TWO_PI/count;
     float x = cos(angle*i) * radius;
     float y = sin(angle*i) * radius;
     float x2 = cos(angle*i+angle) * radius;
-    float y2 = sin(angle*i+angle) * radius; 
+    float y2 = sin(angle*i+angle) * radius;
 
-triangle(0,0,x,y,x2,y2);
+triangle(0,0,x,y,x2,y2); 
   }
-
-//Original circle of triangles
-  fill(200,235,225,150); 
-  for (int i=0; i<circleResolution; i++){
+  
+  fill(255);
+  for (int i=0; i<100; i++){
+    float angle = TWO_PI/45;
     float x = cos(angle*i) * radius;
     float y = sin(angle*i) * radius;
-    float x2 = cos(angle*i+1.5*angle) * radius;
-    float y2 = sin(angle*i+1.5*angle) * radius;
+    float x2 = cos(angle*i+0.5*angle) * radius;
+    float y2 = sin(angle*i+0.5*angle) * radius;
+    float x3 = cos(angle*i+0.25*angle)*(radius-10);
+    float y3 = sin(angle*i+0.25*angle)*(radius-10);
+//A point on the triangles changes from 0,0 to 10pixels from the circumference of the circle
+triangle(x3,y3,x,y,x2,y2); 
 
-triangle(0,0,x,y,x2,y2);
   }
 
   if (savePDF) {
