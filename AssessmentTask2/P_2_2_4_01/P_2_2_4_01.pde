@@ -28,6 +28,7 @@ import processing.pdf.*;
 import java.util.Calendar;
 
 boolean savePDF = false;
+PImage hand;
 
 int maxCount = 5000; //max count of the cirlces
 int currentCount = 1;
@@ -36,21 +37,24 @@ float[] y = new float[maxCount];
 float[] r = new float[maxCount]; // radius
 
 void setup() {
-  size(167*3,241*3);
+  size(2448/4,2612/4); //Changes the size of the window to be proportional to the 'hand' image
   smooth();
-  //frameRate(10);
+//frameRate(10);
+
+hand = loadImage("hand.jpg"); //Assigns image to 'hand'
 
   // first circle
-  x[0] = width/2;
-  y[0] = height/2;
+  x[0] = 368; //Changes the circle's x-coordinate to that of the fingertip
+  y[0] = 268; //Changes the circle's y-coordinate to that of the fingertip
   r[0] = 10;
   //r[0] = 400; 
 }
 
-
 void draw() {
   if (savePDF) beginRecord(PDF, timestamp()+".pdf");
   background(255);
+
+image(hand, 0,0,width,height); //Inserts image to full window size
 
   strokeWeight(0.5);
   //noFill();
@@ -72,9 +76,9 @@ void draw() {
   }
 
   // show random position and line
-  // fill(230);
-  // ellipse(newX,newY,newR*2,newR*2); 
-  // line(newX,newY,x[closestIndex],y[closestIndex]);
+  //fill(230);
+  //ellipse(newX,newY,newR*2,newR*2); 
+  //line(newX,newY,x[closestIndex],y[closestIndex]);
 
   // aline it to the closest circle outline
   float angle = atan2(newY-y[closestIndex], newX-x[closestIndex]);
@@ -86,7 +90,7 @@ void draw() {
 
   // draw them
   for (int i=0 ; i < currentCount; i++) {
-    //fill(50,150);
+     //fill(50,150);
     fill(50);
     ellipse(x[i],y[i], r[i]*2,r[i]*2);  
   }
